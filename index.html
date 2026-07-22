@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Craft-Español • Repaso Examen 10°</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky-top:#3E7BD6;
+  --sky-bot:#8FCBEA;
+  --grass:#5D9C39;
+  --grass-dark:#3E6B25;
+  --dirt:#8B5A2C;
+  --dirt-dark:#5C3A1A;
+  --stone:#8B8B8B;
+  --stone-dark:#5A5A5A;
+  --obsidian:#1C1330;
+  --obsidian-2:#2E1F52;
+  --diamond:#5CE7E1;
+  --gold:#FFD54A;
+  --emerald:#3ED17A;
+  --redstone:#E2453C;
+  --panel:#C8A570;
+  --panel-dark:#7A5A34;
+  --ink:#241a0f;
+  --paper:#EFE0BE;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'VT323', monospace;
+  font-size:22px;
+  color:var(--ink);
+  background:linear-gradient(var(--sky-top), var(--sky-bot));
+  min-height:100vh;
+  image-rendering:pixelated;
+  overflow-x:hidden;
+}
+.pixel-font{ font-family:'Press Start 2P', monospace; }
+#clouds{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.cloud{position:absolute;background:#fff;opacity:.85;box-shadow:
+  16px 0 0 #fff, -16px 0 0 #fff, 0 12px 0 #fff, 32px 12px 0 #fff, -32px 12px 0 #fff;
+  width:24px;height:16px;animation:drift linear infinite;}
+@keyframes drift{ from{transform:translateX(-10vw);} to{transform:translateX(110vw);} }
+
+.app{position:relative;z-index:1;max-width:720px;margin:0 auto;padding:14px 12px 90px;}
+
+/* Blocky Minecraft panel style */
+.slab{
+  background:var(--panel);
+  border:4px solid var(--panel-dark);
+  box-shadow: inset 3px 3px 0 rgba(255,255,255,.35), inset -3px -3px 0 rgba(0,0,0,.35);
+  border-radius:2px;
+  padding:14px;
+  margin-bottom:14px;
+}
+.slab.dark{ background:#3a2a18; color:#f1e2c0; border-color:#241a0f; }
+.title-bar{
+  text-align:center;
+  padding:14px 8px;
+  margin-bottom:16px;
+}
+.title-bar h1{
+  font-size:15px;
+  line-height:1.6;
+  color:#fff;
+  text-shadow: 3px 3px 0 #3E6B25, -1px -1px 0 #24461a;
+  margin:0 0 6px;
+}
+.title-bar p{
+  font-size:20px;
+  margin:0;
+  color:#eaffe0;
+  text-shadow:2px 2px 0 #24461a;
+}
+
+/* Buttons */
+.btn{
+  font-family:'Press Start 2P', monospace;
+  font-size:11px;
+  color:#fff;
+  background:var(--grass);
+  border:3px solid var(--grass-dark);
+  box-shadow: inset 2px 2px 0 rgba(255,255,255,.4), inset -2px -2px 0 rgba(0,0,0,.35);
+  padding:12px 10px;
+  cursor:pointer;
+  width:100%;
+  text-align:left;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  line-height:1.5;
+  transition:transform .05s;
+}
+.btn:active{ transform:translateY(2px); }
+.btn:disabled{ cursor:default; opacity:.55; }
+.btn.stone{ background:var(--stone); border-color:var(--stone-dark); }
+.btn.obsidian{ background:var(--obsidian-2); border-color:#0d0818; }
+.btn.gold{ background:#C9992C; border-color:#7a5a12; }
+.btn.wide{ justify-content:center; }
+.btn.small{ font-size:10px; padding:8px; width:auto; }
+.btn.correct{ background:var(--emerald)!important; border-color:#1c8a4f!important; }
+.btn.wrong{ background:var(--redstone)!important; border-color:#8f1f19!important; animation:shake .3s; }
+@keyframes shake{ 0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
+
+.icon{ width:26px;height:26px;flex:0 0 auto; image-rendering:pixelated; }
+
+/* World cards */
+.world-card{
+  display:flex;align-items:center;gap:12px;
+  padding:14px;margin-bottom:14px;
+  border:4px solid var(--panel-dark);
+  cursor:pointer;
+  position:relative;
+}
+.world-card .block{
+  width:52px;height:52px;flex:0 0 auto;border:3px solid rgba(0,0,0,.4);
+}
+.world-card.grass{ background:linear-gradient(180deg,#EFE0BE 0%, #d9e8bd 100%); }
+.world-card.grass .block{ background:linear-gradient(var(--grass) 0 60%, var(--dirt) 60% 100%); }
+.world-card.obsidian{ background:linear-gradient(180deg,#EFE0BE 0%, #cdbfe3 100%); }
+.world-card.obsidian .block{ background:repeating-linear-gradient(45deg, var(--obsidian), var(--obsidian) 6px, var(--obsidian-2) 6px, var(--obsidian-2) 12px); }
+.world-card.stone{ background:linear-gradient(180deg,#EFE0BE 0%, #d6d6d6 100%); }
+.world-card.stone .block{ background:repeating-linear-gradient(0deg, var(--stone), var(--stone) 8px, var(--stone-dark) 8px, var(--stone-dark) 10px); }
+.world-card .info{ flex:1; }
+.world-card .info h3{ font-family:'Press Start 2P'; font-size:11px; margin:0 0 6px; }
+.world-card .info p{ margin:0; font-size:18px; opacity:.85; }
+.progress-track{ background:#00000030; border:2px solid #00000055; height:14px; margin-top:8px; }
+.progress-fill{ background:var(--emerald); height:100%; width:0%; transition:width .4s; }
+
+/* Level list */
+.level-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.level-row .stars{ font-size:16px; min-width:64px; text-align:right; color:var(--gold); text-shadow:1px 1px 0 #000; }
+
+/* Quiz */
+.quiz-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-family:'Press Start 2P'; font-size:10px; color:#fff; text-shadow:2px 2px 0 #000; }
+.hearts{ letter-spacing:3px; }
+.qtext{ font-size:24px; line-height:1.4; margin:10px 0 16px; }
+.options{ display:flex; flex-direction:column; gap:10px; }
+.feedback{ margin-top:12px; padding:10px; font-size:19px; border:3px solid; }
+.feedback.ok{ background:#e6fff0; border-color:var(--emerald); }
+.feedback.no{ background:#ffe9e7; border-color:var(--redstone); }
+.nav-row{ display:flex; gap:10px; margin-top:14px; }
+.nav-row .btn{ width:auto; flex:1; justify-content:center; }
+
+.hidden{ display:none!important; }
+
+/* Result / rank screen */
+.rank-badge{ text-align:center; padding:20px; }
+.rank-badge .big{ font-family:'Press Start 2P'; font-size:34px; margin:10px 0; }
+.rank-badge .score{ font-family:'Press Start 2P'; font-size:20px; }
+
+/* top nav */
+.topnav{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.topnav .btn{ width:auto; }
+footer{ text-align:center; font-size:14px; opacity:.6; margin-top:20px; }
+
+@media (min-width:600px){
+  body{font-size:24px;}
+  .title-bar h1{font-size:19px;}
+}
+</style>
+</head>
+<body>
+<div id="clouds"></div>
+<div class="app" id="app"></div>
+<footer class="app">⛏️ Hecho para repasar el examen de Español 10° · I Periodo 2026</footer>
+
+<script>
+/* ============================= DATOS DEL EXAMEN ============================= */
+const WORLDS = [
+{
+  id:'moto', name:'Bosque de Desamparados', subtitle:'Indicador 1 · Novela "El Moto"', theme:'grass',
+  levels:[
+    { id:'m1', name:'Biografía de García Monge', questions:[
+      {q:'¿En qué cantón nació Joaquín García Monge?', options:['Desamparados, San José','Cartago centro','Grecia, Alajuela','Puriscal'], correct:0, tip:'García Monge nació en Desamparados, el mismo pueblo donde ambienta su novela.'},
+      {q:'¿En qué año nació Joaquín García Monge?', options:['1858','1881','1900','1920'], correct:1, tip:'Nació el 20 de enero de 1881.'},
+      {q:'¿Cómo se llamaba la revista cultural que dirigió por 40 años?', options:['La Nación','Repertorio Americano','El Convivio','La Prensa Libre'], correct:1, tip:'Repertorio Americano fue su gran proyecto editorial, de alcance latinoamericano.'},
+      {q:'¿Qué cargo político importante ocupó García Monge?', options:['Presidente de la República','Ministro de Educación','Alcalde de Desamparados','Diputado por Cartago'], correct:1, tip:'Fue Ministro de Educación Pública.'},
+      {q:'¿Qué distinción se le otorgó en 1958?', options:['Premio Nobel de Literatura','Título de Benemérito de la Patria','Doctorado Honoris Causa en Harvard','Orden de Vasco Núñez de Balboa'], correct:1, tip:'Se le declaró Benemérito de la Patria el 25 de octubre de 1958.'},
+      {q:'¿En qué año murió García Monge?', options:['1900','1940','1958','1970'], correct:2, tip:'Murió el 31 de octubre de 1958, el mismo año de su distinción.'},
+      {q:'¿Cuál de estas obras NO pertenece a García Monge?', options:['Hijas del Campo','Abnegación','Mamita Yunai','El Convivio'], correct:2, tip:'"Mamita Yunai" es de Carlos Luis Fallas, no de García Monge. ¡Cuidado con confundirlos!'},
+      {q:'Cuando los hermanos Tinoco tomaron el poder en 1917, ¿qué le pasó a García Monge?', options:['Fue nombrado presidente','Fue destituido de su cargo y viajó a buscar apoyo a Nueva York','Se exilió en España de por vida','No sufrió ningún cambio'], correct:1, tip:'El golpe de Estado de los Tinoco lo apartó del cargo; viajó a buscar apoyo para su revista.'}
+    ]},
+    { id:'m2', name:'La novela y su movimiento literario', questions:[
+      {q:'¿En qué año fue publicada la novela El Moto?', options:['1885','1900','1920','1950'], correct:1, tip:'Se publicó en 1900.'},
+      {q:'¿Por qué es tan importante El Moto en la historia literaria costarricense?', options:['Fue la novela más vendida del siglo XX','Es considerada la primera novela costarricense','Ganó un premio internacional','Fue escrita por un extranjero'], correct:1, tip:'Se le reconoce como la primera novela de la literatura costarricense.'},
+      {q:'¿A qué movimiento literario pertenece El Moto?', options:['Romanticismo','Realismo social / costumbrismo','Vanguardismo','Modernismo'], correct:1, tip:'Combina el Realismo (crítica social) con el Costumbrismo (retrato de la vida cotidiana).'},
+      {q:'¿Cómo se llamaba antiguamente el poblado de Desamparados, donde se ambienta la novela?', options:['Dos Cercas','Los Llanos','El Guarco','Barva'], correct:0, tip:'Antes se le conocía como Dos Cercas.'},
+      {q:'¿Por qué cambió su nombre el pueblo a "Desamparados"?', options:['Por un terremoto','Se puso bajo el Patronato de la Virgen de los Desamparados','Por orden del gobierno central','Por el apellido de un fundador'], correct:1, tip:'El nombre religioso reemplazó al antiguo "Dos Cercas".'},
+      {q:'¿Cuántos capítulos tiene la novela El Moto?', options:['7, con título cada uno','14, sin títulos','20, numerados en romano','5 partes largas'], correct:1, tip:'Son 14 capítulos numerados pero sin título.'},
+      {q:'Un ejemplo costumbrista dentro de la novela es la descripción de:', options:['una batalla militar','el rezo del trisagio','un viaje a Europa','una fiesta de la alta sociedad de San José'], correct:1, tip:'El costumbrismo retrata hechos cotidianos y religiosos como el rezo del trisagio.'},
+      {q:'¿Qué tipo de personajes son característicos del costumbrismo en la obra?', options:['Reyes y nobles','Personajes humildes, como El Moto','Seres fantásticos','Extranjeros adinerados'], correct:1, tip:'El costumbrismo incorpora personajes humildes y cercanos a la vida real.'}
+    ]},
+    { id:'m3', name:'Los personajes', questions:[
+      {q:'¿Cuál es el verdadero nombre de "El Moto"?', options:['Sebastián Solano','José Blas','Frutos Vargas','Yanuario Reyes'], correct:1, tip:'El protagonista se llama José Blas; "El Moto" es su apodo.'},
+      {q:'¿Por qué le apodan "El Moto" al protagonista?', options:['Por su fuerza física','Por ser huérfano, como un "ternero sin madre"','Por su forma de hablar','Por trabajar con motores'], correct:1, tip:'"Moto" es el ternero sin madre; el apodo surge de una broma cruel de un compañero de escuela por quedar huérfano.'},
+      {q:'¿De quién se enamora El Moto?', options:['Miquela','Cundila Guillén','La hija del cura','Una vecina de San José'], correct:1, tip:'Se enamora de Cundila, la hija de su patrón don Soledad.'},
+      {q:'¿Quién es don Soledad Guillén?', options:['El maestro de escuela','Un campesino pobre','El padre de Cundila, hombre adinerado del pueblo','El cura del pueblo'], correct:2, tip:'Don Soledad es el padre de Cundila y patrón de El Moto.'},
+      {q:'¿Qué trabajo realiza El Moto para don Soledad?', options:['Cuidar el ganado','Recoger el diezmo','Enseñar catecismo','Administrar sus tierras'], correct:1, tip:'El Moto trabaja recogiendo el diezmo para don Soledad, y así conoce a Cundila.'},
+      {q:'¿Cómo se describe a Miquela (esposa de Soledad)?', options:['Rebelde y autoritaria','Sumisa, religiosa y devota de las tradiciones católicas','Ausente durante toda la novela','Enemiga de su hija Cundila'], correct:1, tip:'Miquela refleja el papel sumiso asignado a la mujer de la época.'},
+      {q:'¿Quién termina casándose con Cundila al final?', options:['El Moto (José Blas)','Sebastián Solano, padrino del Moto','Don Frutos, el maestro','Un pretendiente de San José'], correct:1, tip:'Cundila se casa con Sebastián Solano, hombre mayor y de buena posición económica: la victoria del interés material sobre el amor.'}
+    ]},
+    { id:'m4', name:'Temas y espacios', questions:[
+      {q:'¿Cuál es el tema central de la novela El Moto?', options:['La guerra entre pueblos vecinos','El amor frustrado por el destino y los prejuicios sociales','La conquista española','Un viaje de aventuras'], correct:1, tip:'El amor entre El Moto y Cundila se frustra por la diferencia de clase social y económica.'},
+      {q:'Según la intención moralista de la obra, ¿qué poder vence al final?', options:['El poder espiritual (el amor)','El poder material (económico)','El poder religioso','El poder político'], correct:1, tip:'El dinero y la posición social de Sebastián Solano derrotan al amor sincero de El Moto.'},
+      {q:'¿Cuál es la enseñanza moralista que transmite la novela?', options:['El dinero no importa si hay amor verdadero','La clase campesina no debe aspirar a unirse a la clase alta, pues esta es materialista y traicionera','Todos los personajes deben migrar a la ciudad','La educación resuelve cualquier diferencia social'], correct:1, tip:'Es una advertencia moralista típica del costumbrismo de la época.'},
+      {q:'¿Qué significa realmente el título "El Moto"?', options:['Un vehículo de dos ruedas','El ternero sin madre; huérfano de padres y de nivel social','Un apodo cariñoso sin significado','Un título honorífico religioso'], correct:1, tip:'"Moto" es el ternero sin madre: José Blas es huérfano tanto de padres como de posición social.'},
+      {q:'¿Cuál es uno de los temas secundarios de la novela?', options:['La idealización de la vida campesina y el trabajo del campo','La vida urbana moderna','El avance tecnológico','La política internacional'], correct:0, tip:'La novela idealiza el trabajo y la vida sencilla del campo.'},
+      {q:'Cuando se describe la posición topográfica de Desamparados (vistas, seguridad ante el río y el viento), se está analizando el espacio:', options:['psicológico','físico','moral','religioso'], correct:1, tip:'La descripción del lugar y su geografía corresponde al espacio físico.'},
+      {q:'La devoción de Miquela y su familia al rosario y a las tradiciones católicas corresponde al espacio:', options:['económico','físico','religioso','psicológico'], correct:2, tip:'Las prácticas de fe y tradición religiosa son parte del espacio religioso de la novela.'},
+      {q:'La angustia y el sufrimiento interior que siente El Moto al perder a Cundila corresponde al espacio:', options:['físico','psicológico','religioso','económico'], correct:1, tip:'Las emociones y conflictos internos del personaje pertenecen al espacio psicológico.'},
+      {q:'El juicio implícito de la novela sobre anteponer el dinero al amor verdadero corresponde al espacio:', options:['físico','religioso','moral','económico'], correct:2, tip:'La valoración de lo correcto o incorrecto en las decisiones de los personajes es el espacio moral.'}
+    ]}
+  ]
+},
+{
+  id:'ensayo', name:'Torre de Obsidiana', subtitle:'Indicador 2 · Artículo "El costarricense no sabe escribir"', theme:'obsidian',
+  levels:[
+    { id:'e1', name:'Datos del artículo', questions:[
+      {q:'¿Quién escribió el artículo de opinión "El costarricense no sabe escribir"?', options:['Carlos Luis Fallas','Jacques Sagot','Joaquín García Monge','Carmen Naranjo'], correct:1, tip:'El autor es Jacques Sagot.'},
+      {q:'¿En qué medio de comunicación se publicó el artículo?', options:['La Nación (sección Opinión)','Semanario Universidad','La Teja','Repertorio Americano'], correct:0, tip:'Se publicó en la sección de Opinión del periódico La Nación.'},
+      {q:'¿Qué tipo de texto es "El costarricense no sabe escribir"?', options:['Cuento fantástico','Poema','Artículo de opinión (texto no literario)','Novela costumbrista'], correct:2, tip:'Es un texto no literario: un artículo de opinión.'},
+      {q:'¿Cuál es la tesis principal que plantea el título del artículo?', options:['Los costarricenses escriben muy bien','Los costarricenses no saben escribir','El español está desapareciendo en Costa Rica','Se necesita más tecnología en las aulas'], correct:1, tip:'La tesis central es que el costarricense, en general, no sabe escribir.'},
+      {q:'¿Qué relación establece el autor entre lectura y escritura?', options:['No tienen ninguna relación','Quien no sabe leer bien, tampoco sabe escribir bien','Se puede escribir sin nunca leer','La escritura es más fácil que la lectura'], correct:1, tip:'El autor argumenta que la falta de buena lectura provoca la falta de buena escritura.'},
+      {q:'¿Cuál es la intención principal del autor al escribir este artículo?', options:['Elogiar la educación costarricense','Señalar y criticar una deficiencia cultural en lectura y escritura','Promocionar un libro nuevo','Narrar una anécdota personal sin crítica'], correct:1, tip:'El artículo tiene una intención crítica hacia los hábitos de lectura y escritura del país.'}
+    ]},
+    { id:'e2', name:'Postura crítica del autor', questions:[
+      {q:'Según el autor, ¿qué es incapaz de distinguir el costarricense en un texto?', options:['Un género de otro','Los colores de la portada','El precio del libro','El idioma del texto'], correct:0, tip:'El autor afirma que no se distingue un género literario de otro.'},
+      {q:'¿Qué dificultad de lectura crítica menciona el autor?', options:['Leer en voz alta','Distinguir la tesis principal de las ideas secundarias','Memorizar textos completos','Leer rápido'], correct:1, tip:'Señala que cuesta jerarquizar la tesis principal frente a las ideas subsidiarias.'},
+      {q:'Según el autor, ¿qué recurso retórico "se le escapa completamente" al costarricense?', options:['La rima','La ironía como arma argumentativa','La ortografía','La narración cronológica'], correct:1, tip:'El autor critica que la ironía, como recurso argumentativo, no se comprende.'},
+      {q:'¿Qué tipo de humor dice el autor que el costarricense sí logra comprender?', options:['El humor irónico y sutil','Solamente la literalidad más simple ("chata")','El humor negro','Ningún tipo de humor'], correct:1, tip:'El autor afirma que solo se capta la literalidad más simple.'},
+      {q:'El "sentido segundo" de un texto, mencionado por el autor, se refiere a:', options:['El segundo párrafo del texto','La comprensión más profunda, más allá de lo literal','El significado de la portada','La opinión del lector'], correct:1, tip:'Es la lectura interpretativa, más allá de lo literal.'},
+      {q:'El autor menciona el mal uso de la preposición "por" como ejemplo de:', options:['Un acierto de redacción','Un vicio de escritura frecuente en el costarricense','Un recurso poético','Una norma aceptada por la RAE'], correct:1, tip:'Lo presenta como un vicio, una especie de "taquigrafía" confusa del idioma.'},
+      {q:'¿Cuál describe mejor el tono del artículo de Jacques Sagot?', options:['Alegre y celebratorio','Crítico y severo','Indiferente','Cómico y ligero'], correct:1, tip:'El tono es crítico, casi de denuncia cultural.'}
+    ]},
+    { id:'e3', name:'Argumentos y enseñanza principal', questions:[
+      {q:'¿Qué función del lenguaje asocia el autor con el ensayo y la polémica?', options:['Función poética','Función argumentativa','Función descriptiva','Función narrativa'], correct:1, tip:'El ensayo y la polémica usan principalmente la función argumentativa.'},
+      {q:'¿Qué función del lenguaje asocia el autor con la prosa?', options:['Función argumentativa','Función descriptiva y narrativa','Función apelativa','Función fática'], correct:1, tip:'La prosa se asocia con describir y narrar hechos.'},
+      {q:'¿Qué propiedades del lenguaje destaca el autor en la poesía?', options:['Eufónica, polisémica y casi hipnótica','Solamente gramatical','Exclusivamente lógica','Matemática'], correct:0, tip:'En la poesía el autor resalta el sonido, los múltiples significados y el efecto casi hipnótico del lenguaje.'},
+      {q:'Según el autor, ¿por qué "no sabe escribir" el costarricense?', options:['Porque el español es un idioma muy difícil','Porque, ante todo, no sabe leer bien','Porque no existen escuelas suficientes','Porque prefiere hablar inglés'], correct:1, tip:'La causa raíz señalada es la deficiente lectura.'},
+      {q:'¿Cuál es la enseñanza principal del artículo sobre lectura y escritura?', options:['Escribir bien no requiere leer','La lectura crítica y profunda es la base para escribir bien','Basta con leer redes sociales','La escritura se aprende solo memorizando reglas'], correct:1, tip:'El mensaje central: sin buena lectura no hay buena escritura.'},
+      {q:'Este artículo, para efectos del examen, se clasifica como un texto:', options:['Literario','No literario','Poético','Dramático'], correct:1, tip:'Es un texto no literario: un artículo de opinión periodístico.'},
+      {q:'¿Qué actitud asume el autor frente a la sociedad costarricense?', options:['De autocrítica y denuncia cultural','De total aprobación','De indiferencia absoluta','De burla sin propósito'], correct:0, tip:'Sagot hace una autocrítica cultural severa sobre los hábitos de lectura y escritura del país.'}
+    ]}
+  ]
+},
+{
+  id:'gramatica', name:'Mina de la Gramática', subtitle:'Indicador 3 · Barbarismos y combinaciones gramaticales', theme:'stone',
+  levels:[
+    { id:'g1', name:'Lengua, habla y barbarismos', questions:[
+      {q:'¿Qué es la "lengua"?', options:['El uso individual que cada persona hace del idioma','El sistema abstracto y social que comparte toda una comunidad de hablantes','Un error de pronunciación','Un dialecto regional exclusivamente'], correct:1, tip:'La lengua es el sistema compartido por toda la comunidad; es social y abstracto.'},
+      {q:'¿Qué es el "habla"?', options:['El uso concreto e individual que cada hablante hace de la lengua','El diccionario oficial de un idioma','La gramática escrita en los libros','Un sinónimo exacto de "lengua"'], correct:0, tip:'El habla es la realización individual y concreta de la lengua.'},
+      {q:'Dos personas pronuncian una misma palabra de forma distinta según su región; esto ejemplifica:', options:['La lengua','El habla','Un barbarismo obligatorio','La sintaxis'], correct:1, tip:'Las variaciones individuales o regionales de pronunciación son parte del habla.'},
+      {q:'El conjunto de reglas gramaticales del español que comparten todos sus hablantes corresponde a:', options:['El habla','La lengua','Un barbarismo','Un vulgarismo'], correct:1, tip:'Ese sistema compartido es la lengua.'},
+      {q:'¿Qué es un barbarismo?', options:['Una figura literaria elegante','Un vicio o incorrección en el uso del lenguaje (pronunciación, escritura o significado)','Un sinónimo de "lengua"','Una regla ortográfica correcta'], correct:1, tip:'El barbarismo es un error o incorrección en el uso de la lengua.'},
+      {q:'Usar un anglicismo mal adaptado al español (cuando existe una palabra equivalente) es un ejemplo de:', options:['Barbarismo','Regla ortográfica','Sinónimo perfecto','Figura retórica'], correct:0, tip:'Los extranjerismos mal adaptados son un tipo común de barbarismo.'},
+      {q:'La diferencia clave entre comunicación y expresión es que la comunicación:', options:['Nunca necesita receptor','Implica un intercambio, con receptor y posible respuesta','Es siempre escrita','No usa ningún código'], correct:1, tip:'La comunicación requiere un receptor que reciba (y a menudo responda) el mensaje.'},
+      {q:'La expresión, a diferencia de la comunicación, puede ser:', options:['Bidireccional obligatoriamente','Unidireccional, sin necesidad de una respuesta','Inexistente sin público','Solo oral, nunca escrita'], correct:1, tip:'La expresión no requiere necesariamente un receptor que responda.'}
+    ]},
+    { id:'g2', name:'por qué / porque / por que / porqué', questions:[
+      {q:'"¿______ estudias tanto para este examen?"', options:['Por qué','Porque','Por que','Porqué'], correct:0, tip:'Es una pregunta directa: se usa "por qué" (dos palabras, con tilde).'},
+      {q:'"Estudio mucho ______ quiero aprobar el examen."', options:['por qué','porque','por que','porqué'], correct:1, tip:'Es una causa: se usa "porque" (una palabra, sin tilde).'},
+      {q:'"Esa es la razón ______ te lo explico de nuevo." (equivale a "por la cual")', options:['por qué','porque','por que','porqué'], correct:2, tip:'Aquí "que" es un relativo precedido de la preposición "por": se escribe separado, sin tilde.'},
+      {q:'"Nadie comprende el ______ de tu silencio." (funciona como sustantivo, con artículo "el")', options:['por qué','porque','por que','porqué'], correct:3, tip:'"El porqué" es un sustantivo: una sola palabra, con tilde y con artículo.'},
+      {q:'"No entiendo ______ te fuiste sin avisar." (pregunta indirecta)', options:['por qué','porque','por que','porqué'], correct:0, tip:'Las preguntas indirectas también usan "por qué" (dos palabras, con tilde).'},
+      {q:'"Llegamos tarde ______ el autobús se dañó."', options:['por qué','porque','por que','porqué'], correct:1, tip:'Es una explicación causal: "porque", una sola palabra.'},
+      {q:'"Ese es el motivo ______ no asistí a la reunión."', options:['por qué','porque','por que','porqué'], correct:2, tip:'"Motivo por que" = "motivo por el cual": preposición + relativo, separado.'},
+      {q:'"Quiero saber el ______ de tu actitud."', options:['por qué','porque','por que','porqué'], correct:3, tip:'Sustantivo con artículo: "el porqué", una palabra con tilde.'}
+    ]},
+    { id:'g3', name:'sobre todo / sobretodo', questions:[
+      {q:'"Me gusta toda la fruta, ______ el mango." (equivale a "especialmente")', options:['sobre todo','sobretodo'], correct:0, tip:'Como locución adverbial de énfasis, se escribe separado: "sobre todo".'},
+      {q:'"Hacía mucho frío, así que se puso el ______ antes de salir." (una prenda de abrigo)', options:['sobre todo','sobretodo'], correct:1, tip:'Como sustantivo (el abrigo), se escribe junto: "el sobretodo".'},
+      {q:'"______, quiero agradecerles a todos por su ayuda."', options:['Sobre todo','Sobretodo'], correct:0, tip:'Aquí funciona como locución adverbial ("principalmente"): separado.'},
+      {q:'"Compró un ______ nuevo para el invierno."', options:['sobre todo','sobretodo'], correct:1, tip:'Es un sustantivo (prenda de vestir): se escribe junto.'},
+      {q:'Elige la oración correcta:', options:['"Le gusta el fútbol, sobre todo el Mundial."','"Le gusta el fútbol, sobretodo el Mundial."'], correct:0, tip:'Al funcionar como locución adverbial ("especialmente"), va separado.'},
+      {q:'¿Cuál palabra es un sustantivo que significa "abrigo o prenda de vestir"?', options:['sobre todo','sobretodo'], correct:1, tip:'"Sobretodo" (junto) es la prenda de abrigo.'}
+    ]},
+    { id:'g4', name:'a sí mismo / asimismo', questions:[
+      {q:'"Juan se elogia ______." (a su propia persona)', options:['a sí mismo','asimismo'], correct:0, tip:'Es un pronombre reflexivo: "a sí mismo", tres palabras.'},
+      {q:'"______, quiero mencionar que el proyecto continúa." (equivale a "también")', options:['A sí mismo','Asimismo'], correct:1, tip:'Como conector que añade información, se escribe junto: "asimismo".'},
+      {q:'"El niño se miró ______ en el espejo."', options:['a sí mismo','asimismo'], correct:0, tip:'Reflexivo: la acción recae sobre el propio sujeto.'},
+      {q:'"Terminó el informe; ______, entregó las fotografías."', options:['a sí mismo','asimismo'], correct:1, tip:'Conector equivalente a "además" o "también": se escribe junto.'},
+      {q:'Elige la oración correcta:', options:['"Se cuida asimismo."','"Se cuida a sí mismo."'], correct:1, tip:'Cuando el sentido es reflexivo ("a su propia persona"), va separado: "a sí mismo".'},
+      {q:'¿Cuál palabra funciona como conector de ideas, equivalente a "también"?', options:['a sí mismo','asimismo'], correct:1, tip:'"Asimismo" (junto) conecta ideas, como "también" o "además".'}
+    ]},
+    { id:'g5', name:'con qué / conque / con que', questions:[
+      {q:'"¿______ escribes, con lápiz o lapicero?" (pregunta directa)', options:['con qué','conque','con que'], correct:0, tip:'Pregunta directa: "con qué", dos palabras y con tilde.'},
+      {q:'"Ya terminaste la tarea, ______ vamos a jugar." (equivale a "así que")', options:['con qué','conque','con que'], correct:1, tip:'"Conque" es conjunción consecutiva (una palabra, sin tilde), equivale a "así que".'},
+      {q:'"El lápiz ______ escribo es azul." (preposición + relativo)', options:['con qué','conque','con que'], correct:2, tip:'"Con que" son dos palabras: preposición "con" + relativo "que".'},
+      {q:'"No sé ______ vas a pagar la cuenta." (pregunta indirecta)', options:['con qué','conque','con que'], correct:0, tip:'Las preguntas indirectas también usan "con qué", con tilde.'},
+      {q:'"Te lo advertí, ______ no te quejes ahora."', options:['con qué','conque','con que'], correct:1, tip:'Equivale a "así que": "conque", una palabra.'},
+      {q:'¿Qué palabra equivale a la expresión "así que"?', options:['con qué','conque','con que'], correct:1, tip:'"Conque" (una palabra) es la conjunción consecutiva.'}
+    ]},
+    { id:'g6', name:'si no / sino', questions:[
+      {q:'"______ estudias, no aprobarás el examen." (condición negativa)', options:['Si no','sino'], correct:0, tip:'Es una condición negada: "si no", dos palabras.'},
+      {q:'"No quiero café, ______ té." (contraste)', options:['si no','sino'], correct:1, tip:'Conjunción adversativa que contrasta ideas: "sino", una palabra.'},
+      {q:'"______ llueve mañana, iremos a la playa."', options:['Si no','sino'], correct:0, tip:'Condicional negativo: "si" + "no".'},
+      {q:'"No fue Juan ______ Pedro quien llamó anoche."', options:['si no','sino'], correct:1, tip:'Contraste entre dos opciones: "sino".'},
+      {q:'Elige la oración correcta:', options:['"No es tarde, si no temprano."','"No es tarde, sino temprano."'], correct:1, tip:'Es un contraste (adversativa), no una condición: se usa "sino".'},
+      {q:'"______ me ayudas ahora, no terminaré a tiempo."', options:['Si no','sino'], correct:0, tip:'Condición negativa: "si no", dos palabras.'}
+    ]},
+    { id:'g7', name:'Cofre bonus: redundancias', questions:[
+      {q:'¿Cuál expresión contiene una redundancia?', options:['"Subir arriba"','"Subir la escalera"','"Subir de peso"','"Subir el volumen"'], correct:0, tip:'"Subir" ya implica ir hacia arriba; "subir arriba" es redundante. Basta con decir "subir".'},
+      {q:'¿Cuál expresión contiene una redundancia?', options:['"Entrar al salón"','"Entrar adentro"','"Entrar corriendo"','"Entrar por la puerta"'], correct:1, tip:'"Entrar" ya implica ir hacia adentro; basta con decir "entrar".'},
+      {q:'¿Cuál expresión contiene una redundancia?', options:['"Volver a repetir"','"Repetir el examen"','"Volver a casa"','"Repetir en voz alta"'], correct:0, tip:'"Repetir" ya significa "volver a hacer"; decir ambas cosas es redundante. Basta con "repetir".'},
+      {q:'¿Cuál oración corrige correctamente la redundancia "el motivo es porque"?', options:['"El motivo es que..."','"El motivo es porque de que..."','"El motivo, porque, es..."','No tiene ningún error'], correct:0, tip:'La forma correcta es "el motivo es que...", sin usar "porque" tras "es".'},
+      {q:'¿Cuál expresión contiene una redundancia?', options:['"Salir afuera"','"Salir temprano"','"Salir de vacaciones"','"Salir con amigos"'], correct:0, tip:'"Salir" ya implica ir hacia afuera; basta con decir "salir".'},
+      {q:'"Erario público" es redundante porque:', options:['"Erario" ya significa el tesoro o fondos públicos','"Erario" significa "privado"','No es una expresión redundante','"Erario" es un barbarismo'], correct:0, tip:'"Erario" ya se refiere a los fondos públicos del Estado; decir "público" es redundante.'}
+    ]},
+    { id:'g8', name:'Frases populares vs. lenguaje formal', questions:[
+      {q:'"Ese mae llegó tarde a la reunión." — ¿cuál es la versión en lenguaje formal?', options:['"Esa persona llegó tarde a la reunión."','"Ese chunche llegó tarde a la reunión."','"Esa harina llegó tarde a la reunión."','No tiene equivalente formal'], correct:0, tip:'"Mae" es una forma coloquial para referirse a una persona.'},
+      {q:'"¡Pura vida!" como respuesta a "¿cómo está?", en lenguaje formal equivale a:', options:['"Estoy muy bien, gracias."','"No me interesa."','"Tengo mucho trabajo."','"Estoy molesto."'], correct:0, tip:'"Pura vida" expresa un estado de ánimo positivo; equivale a "estoy bien".'},
+      {q:'"Ese carro está tuanis." — versión formal:', options:['"Ese carro está en muy buen estado."','"Ese carro está dañado."','"Ese carro es antiguo."','"Ese carro es prestado."'], correct:0, tip:'"Tuanis" significa algo bueno, agradable o de buena calidad.'},
+      {q:'"Al chile, no sabía nada de la tarea." — versión formal:', options:['"Sinceramente, no sabía nada de la tarea."','"Tal vez sabía algo de la tarea."','"Con gusto haré la tarea."','"Ya entregué la tarea."'], correct:0, tip:'"Al chile" es una forma coloquial de decir "en verdad" o "sinceramente".'},
+      {q:'"Ando sin harina esta semana." — versión formal:', options:['"Ando sin dinero esta semana."','"Ando sin comida esta semana."','"Ando sin trabajo esta semana."','"Ando sin tiempo esta semana."'], correct:0, tip:'"Harina" es un modismo costarricense para referirse al dinero.'},
+      {q:'"Ese compañero me serruchó el piso." — versión formal:', options:['"Ese compañero habló mal de mí para perjudicarme."','"Ese compañero me ayudó mucho."','"Ese compañero construyó algo conmigo."','"Ese compañero llegó temprano."'], correct:0, tip:'"Serruchar el piso" significa desprestigiar a alguien para quitarle su posición o mérito.'},
+      {q:'"Présteme un tucán, por favor." — versión formal:', options:['"Présteme un billete de cinco mil colones, por favor."','"Présteme un lápiz, por favor."','"Présteme su teléfono, por favor."','"Présteme un libro, por favor."'], correct:0, tip:'"Tucán" es el nombre coloquial del billete de 5.000 colones.'},
+      {q:'"Tengo mucho brete esta semana." — versión formal:', options:['"Tengo mucho trabajo esta semana."','"Tengo mucho sueño esta semana."','"Tengo mucha hambre esta semana."','"Tengo mucho dinero esta semana."'], correct:0, tip:'"Brete" es una forma coloquial de referirse al trabajo o las tareas pendientes.'}
+    ]}
+  ]
+}
+];
+
+/* ============================= ESTADO Y PERSISTENCIA ============================= */
+const SAVE_KEY = 'craftEspanolProgress_v1';
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(SAVE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return { levels:{}, examScores:[] };
+}
+function saveProgress(p){
+  try{ localStorage.setItem(SAVE_KEY, JSON.stringify(p)); }catch(e){}
+}
+let progress = loadProgress();
+
+function levelKey(worldId, levelId){ return worldId + ':' + levelId; }
+function getLevelStars(worldId, levelId){
+  const rec = progress.levels[levelKey(worldId, levelId)];
+  return rec ? rec.stars : 0;
+}
+function totalLevelsCount(){
+  return WORLDS.reduce((acc,w)=>acc + w.levels.length, 0);
+}
+function completedLevelsCount(){
+  return Object.keys(progress.levels).filter(k=>progress.levels[k].done).length;
+}
+
+/* ============================= NAVEGACIÓN / RENDER ============================= */
+const app = document.getElementById('app');
+let view = { screen:'home' };
+
+function go(screen, params){ view = Object.assign({screen}, params||{}); render(); window.scrollTo(0,0); }
+
+function render(){
+  if(view.screen==='home') return renderHome();
+  if(view.screen==='world') return renderWorld(view.worldId);
+  if(view.screen==='quiz') return renderQuiz(view.worldId, view.levelId, false);
+  if(view.screen==='exam-intro') return renderExamIntro();
+  if(view.screen==='exam') return renderExam();
+  if(view.screen==='result') return renderResult(view.correct, view.total, view.isExam);
+}
+
+function iconBlock(kind){
+  return `<div class="block" style="background:${kind}"></div>`;
+}
+
+function renderHome(){
+  const done = completedLevelsCount();
+  const tot = totalLevelsCount();
+  const pct = Math.round(done/tot*100);
+  let html = `
+    <div class="title-bar">
+      <h1 class="pixel-font">CRAFT-ESPAÑOL</h1>
+      <p>Repaso 2° Examen · Español 10° · I Periodo 2026</p>
+    </div>
+    <div class="slab dark">
+      <p class="pixel-font" style="font-size:10px; margin:0 0 8px;">PROGRESO GENERAL</p>
+      <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <p style="margin:8px 0 0; font-size:16px;">${done} / ${tot} niveles completados</p>
+    </div>
+  `;
+  WORLDS.forEach(w=>{
+    const starsTotal = w.levels.reduce((a,l)=>a + l.questions.length,0);
+    const starsGot = w.levels.reduce((a,l)=>a + getLevelStars(w.id,l.id),0);
+    html += `
+      <div class="world-card ${w.theme}" onclick="go('world',{worldId:'${w.id}'})">
+        ${iconBlock('')}
+        <div class="info">
+          <h3>${w.name}</h3>
+          <p>${w.subtitle}</p>
+          <div class="progress-track"><div class="progress-fill" style="width:${Math.round(starsGot/starsTotal*100)}%"></div></div>
+        </div>
+      </div>
+    `;
+  });
+  html += `
+    <div class="slab" style="text-align:center;">
+      <p class="pixel-font" style="font-size:11px; margin:0 0 10px;">⚔️ BATALLA FINAL ⚔️</p>
+      <p style="margin:0 0 12px;">Simulacro mezclado de los 3 mundos. ¡Tu nota va de 0 a 100!</p>
+      <button class="btn gold wide" onclick="go('exam-intro')">Iniciar examen final</button>
+    </div>
+    <div class="slab" style="text-align:center;">
+      <button class="btn stone wide small" onclick="resetProgress()">↺ Reiniciar progreso</button>
+    </div>
+  `;
+  app.innerHTML = html;
+}
+
+function renderWorld(worldId){
+  const w = WORLDS.find(x=>x.id===worldId);
+  let html = `
+    <div class="topnav">
+      <button class="btn stone small" onclick="go('home')">◀ Volver</button>
+    </div>
+    <div class="title-bar">
+      <h1 class="pixel-font" style="font-size:13px;">${w.name}</h1>
+      <p>${w.subtitle}</p>
+    </div>
+  `;
+  w.levels.forEach((l,idx)=>{
+    const stars = getLevelStars(w.id,l.id);
+    const total = l.questions.length;
+    html += `
+      <div class="level-row">
+        <button class="btn ${w.theme==='obsidian'?'obsidian':(w.theme==='stone'?'stone':'')}" style="flex:1;" onclick="go('quiz',{worldId:'${w.id}', levelId:'${l.id}'})">
+          📦 Nivel ${idx+1}: ${l.name}
+        </button>
+        <div class="stars">${stars}/${total}⭐</div>
+      </div>
+    `;
+  });
+  app.innerHTML = html;
+}
+
+/* ---- Quiz engine (practice mode, retry until correct) ---- */
+let quizState = null;
+
+function startQuiz(worldId, levelId){
+  const w = WORLDS.find(x=>x.id===worldId);
+  const l = w.levels.find(x=>x.id===levelId);
+  quizState = {
+    worldId, levelId,
+    questions: l.questions.map((q,i)=>({...q, idx:i})),
+    pos:0,
+    correctFirstTry:0,
+    triedWrongThisQ:new Set(),
+    answeredThisQ:false
+  };
+}
+
+function renderQuiz(worldId, levelId){
+  if(!quizState || quizState.worldId!==worldId || quizState.levelId!==levelId){
+    startQuiz(worldId, levelId);
+  }
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  const w = WORLDS.find(x=>x.id===quizState.worldId);
+  const l = w.levels.find(x=>x.id===quizState.levelId);
+  const q = quizState.questions[quizState.pos];
+  const total = quizState.questions.length;
+
+  let optsHtml = '';
+  q.options.forEach((opt,i)=>{
+    const wrongTried = quizState.triedWrongThisQ.has(i);
+    const isCorrectShown = quizState.answeredThisQ && i===q.correct;
+    let cls = 'btn wide';
+    if(w.theme==='obsidian') cls += ' obsidian'; else if(w.theme==='stone') cls += ' stone';
+    if(isCorrectShown) cls += ' correct';
+    else if(wrongTried) cls += ' wrong';
+    optsHtml += `<button class="${cls}" ${wrongTried||quizState.answeredThisQ? (isCorrectShown?'':'disabled'):''} onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}) ${opt}</button>`;
+  });
+
+  let feedbackHtml = '';
+  if(quizState.answeredThisQ){
+    feedbackHtml = `<div class="feedback ok">✅ ¡Correcto! ${q.tip}</div>`;
+  } else if(quizState.triedWrongThisQ.size>0){
+    feedbackHtml = `<div class="feedback no">❌ Intenta de nuevo. Pista: ${q.tip}</div>`;
+  }
+
+  const html = `
+    <div class="topnav">
+      <button class="btn stone small" onclick="go('world',{worldId:'${w.id}'})">◀ Salir del nivel</button>
+    </div>
+    <div class="quiz-header">
+      <span>${l.name}</span>
+      <span>${quizState.pos+1} / ${total}</span>
+    </div>
+    <div class="slab">
+      <p class="qtext">${q.q}</p>
+      <div class="options">${optsHtml}</div>
+      ${feedbackHtml}
+      <div class="nav-row">
+        ${quizState.answeredThisQ ? `<button class="btn wide" onclick="nextQuizQuestion()">${quizState.pos+1<total?'Siguiente ▶':'Terminar nivel 🏆'}</button>` : ''}
+      </div>
+    </div>
+  `;
+  app.innerHTML = html;
+}
+
+function answerQuiz(i){
+  const q = quizState.questions[quizState.pos];
+  if(quizState.answeredThisQ) return;
+  if(i===q.correct){
+    quizState.answeredThisQ = true;
+    if(quizState.triedWrongThisQ.size===0) quizState.correctFirstTry++;
+  } else {
+    quizState.triedWrongThisQ.add(i);
+  }
+  renderQuizQuestion();
+}
+
+function nextQuizQuestion(){
+  quizState.triedWrongThisQ = new Set();
+  quizState.answeredThisQ = false;
+  quizState.pos++;
+  if(quizState.pos>=quizState.questions.length){
+    // save progress
+    const key = levelKey(quizState.worldId, quizState.levelId);
+    progress.levels[key] = { done:true, stars:quizState.correctFirstTry };
+    saveProgress(progress);
+    go('result', {correct:quizState.correctFirstTry, total:quizState.questions.length, isExam:false, worldId:quizState.worldId});
+    quizState = null;
+  } else {
+    renderQuizQuestion();
+  }
+}
+
+/* ---- Exam mode (mixed final battle) ---- */
+function renderExamIntro(){
+  const totalQ = WORLDS.reduce((a,w)=>a + w.levels.reduce((b,l)=>b+l.questions.length,0),0);
+  const html = `
+    <div class="topnav"><button class="btn stone small" onclick="go('home')">◀ Volver</button></div>
+    <div class="slab dark" style="text-align:center;">
+      <p class="pixel-font" style="font-size:13px;">⚔️ EXAMEN FINAL ⚔️</p>
+      <p style="font-size:19px; margin-top:10px;">30 preguntas mezcladas de los 3 mundos (de un banco de ${totalQ}). Tu resultado se calcula sobre 100, como el examen real.</p>
+      <button class="btn gold wide" style="margin-top:14px;" onclick="startExam()">¡Comenzar simulacro!</button>
+    </div>
+  `;
+  app.innerHTML = html;
+}
+
+let examState = null;
+
+function startExam(){
+  let pool = [];
+  WORLDS.forEach(w=> w.levels.forEach(l=> l.questions.forEach(q=> pool.push({...q, worldTheme:w.theme, worldName:w.name}))) );
+  // shuffle
+  for(let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+  const N = Math.min(30, pool.length);
+  examState = { questions: pool.slice(0,N), pos:0, correct:0, answeredThisQ:false, triedWrongThisQ:new Set(), lockedCorrect:true };
+  go('exam');
+}
+
+function renderExam(){
+  const q = examState.questions[examState.pos];
+  const total = examState.questions.length;
+  let optsHtml = '';
+  q.options.forEach((opt,i)=>{
+    const wrongTried = examState.triedWrongThisQ.has(i);
+    const isCorrectShown = examState.answeredThisQ && i===q.correct;
+    let cls = 'btn wide';
+    if(q.worldTheme==='obsidian') cls += ' obsidian'; else if(q.worldTheme==='stone') cls += ' stone';
+    if(isCorrectShown) cls += ' correct';
+    else if(wrongTried) cls += ' wrong';
+    optsHtml += `<button class="${cls}" ${wrongTried||examState.answeredThisQ? (isCorrectShown?'':'disabled'):''} onclick="answerExam(${i})">${String.fromCharCode(65+i)}) ${opt}</button>`;
+  });
+  let feedbackHtml = '';
+  if(examState.answeredThisQ){
+    feedbackHtml = `<div class="feedback ok">✅ ${q.tip}</div>`;
+  } else if(examState.triedWrongThisQ.size>0){
+    feedbackHtml = `<div class="feedback no">❌ Otra vez. Pista: ${q.tip}</div>`;
+  }
+  const html = `
+    <div class="quiz-header">
+      <span>${q.worldName}</span>
+      <span>Pregunta ${examState.pos+1} / ${total}</span>
+    </div>
+    <div class="slab">
+      <p class="qtext">${q.q}</p>
+      <div class="options">${optsHtml}</div>
+      ${feedbackHtml}
+      <div class="nav-row">
+        ${examState.answeredThisQ ? `<button class="btn wide" onclick="nextExamQuestion()">${examState.pos+1<total?'Siguiente ▶':'Ver resultado 🏁'}</button>` : ''}
+      </div>
+    </div>
+  `;
+  app.innerHTML = html;
+}
+
+function answerExam(i){
+  const q = examState.questions[examState.pos];
+  if(examState.answeredThisQ) return;
+  if(i===q.correct){
+    examState.answeredThisQ = true;
+    if(examState.triedWrongThisQ.size===0) examState.correct++;
+  } else {
+    examState.triedWrongThisQ.add(i);
+  }
+  renderExam();
+}
+
+function nextExamQuestion(){
+  examState.triedWrongThisQ = new Set();
+  examState.answeredThisQ = false;
+  examState.pos++;
+  if(examState.pos>=examState.questions.length){
+    const total = examState.questions.length;
+    const correct = examState.correct;
+    progress.examScores.push({date:new Date().toISOString(), correct, total});
+    saveProgress(progress);
+    go('result', {correct, total, isExam:true});
+    examState = null;
+  } else {
+    renderExam();
+  }
+}
+
+/* ---- Result screen ---- */
+function renderResult(correct, total, isExam){
+  const pct = Math.round(correct/total*100);
+  let rank, emoji;
+  if(pct>=90){ rank='DIAMANTE'; emoji='💎'; }
+  else if(pct>=75){ rank='ESMERALDA'; emoji='🟢'; }
+  else if(pct>=60){ rank='ORO'; emoji='🟡'; }
+  else if(pct>=40){ rank='HIERRO'; emoji='⚙️'; }
+  else { rank='PIEDRA'; emoji='🪨'; }
+
+  const html = `
+    <div class="slab dark rank-badge">
+      <p class="pixel-font" style="font-size:12px;">${isExam? 'RESULTADO DEL EXAMEN FINAL' : 'NIVEL COMPLETADO'}</p>
+      <div class="big">${emoji}</div>
+      <p class="score">${pct} / 100</p>
+      <p style="font-size:20px; margin-top:6px;">Rango: ${rank}</p>
+      <p style="font-size:18px; opacity:.85;">${correct} de ${total} correctas en el primer intento</p>
+    </div>
+    <div class="slab" style="text-align:center;">
+      <button class="btn wide" onclick="go('home')">🏠 Volver al mapa</button>
+      ${isExam? `<button class="btn gold wide" style="margin-top:10px;" onclick="startExam()">🔁 Repetir examen final</button>` : ''}
+    </div>
+  `;
+  app.innerHTML = html;
+}
+
+function resetProgress(){
+  if(confirm('¿Seguro que quieres borrar todo tu progreso guardado?')){
+    progress = { levels:{}, examScores:[] };
+    saveProgress(progress);
+    go('home');
+  }
+}
+
+/* Nubes de fondo */
+(function initClouds(){
+  const container = document.getElementById('clouds');
+  for(let i=0;i<6;i++){
+    const c = document.createElement('div');
+    c.className='cloud';
+    c.style.top = (10 + Math.random()*50) + '%';
+    c.style.left = (Math.random()*100) + '%';
+    c.style.animationDuration = (40 + Math.random()*40) + 's';
+    c.style.animationDelay = (-Math.random()*40) + 's';
+    c.style.transform = 'scale(' + (1+Math.random()*1.5) + ')';
+    container.appendChild(c);
+  }
+})();
+
+render();
+</script>
+</body>
+</html>
