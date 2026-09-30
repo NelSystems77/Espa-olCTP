@@ -354,10 +354,10 @@ const MODULES = [
 ];
 const LEVELS = {1:'Conocimiento', 2:'Aplicación', 3:'Análisis'};
 const INDICATORS = {
-  1:'Analizar críticamente textos literarios a partir de los conocimientos previos y las cuatro fases (natural, de ubicación, analítica y explicativa e interpretativa).',
+  1:'Analizar críticamente textos literarios a partir de los conocimientos previos y las cuatro fases (natural, de ubicación, analítica y explicativa e interpretativa), para encontrar y compartir sus diversos sentidos. Texto literario seleccionado por el estudiante. Cuento La casa de Asterión del autor Jorge Luis Borges y novela La metamorfosis del autor Franz Kafka.',
   2:'Identificar la estructura del verbo: raíz, persona, número (singular/plural), tiempo y modo (indicativo, subjuntivo, imperativo) en fragmentos textuales.',
   3:'Producir oraciones empleando adecuadamente tipos de verbos según la conjugación que se solicite y emplear bien la ortografía de sus marcas de tiempo.',
-  4:'Producir, a partir de una temática dada y relacionada con el texto literario evaluado, un texto crítico.'
+  4:'Producir a partir de una temática dada y relacionada con el texto literario evaluado y un texto crítico.'
 };
 
 /* =========================================================
@@ -365,55 +365,66 @@ const INDICATORS = {
    tag = etiqueta que llevan las preguntas; se cuentan automáticamente
    ========================================================= */
 const SYLLABUS = [
-  {ind:1, col:'Contenido', items:[
-    {tag:'fases', txt:'Las cuatro fases del análisis: natural, de ubicación, analítica y explicativa-interpretativa', where:['fases']},
-    {tag:'ast-lectura', txt:'La casa de Asterión: lectura sobre el texto (comprensión del argumento)', where:['asterion']},
-    {tag:'ast-tema', txt:'La casa de Asterión: temática central implícita', where:['asterion']},
-    {tag:'ast-temas2', txt:'La casa de Asterión: temas secundarios', where:['asterion']},
-    {tag:'ast-pers', txt:'La casa de Asterión: personajes', where:['asterion']},
-    {tag:'ast-esp', txt:'La casa de Asterión: espacios físico, psicológico, económico, moral y religioso', where:['asterion','fases']},
-    {tag:'ast-ens', txt:'La casa de Asterión: enseñanzas', where:['asterion']},
-    {tag:'ast-ctx', txt:'La casa de Asterión: relación del texto con el contexto', where:['asterion']},
-    {tag:'mito', txt:'Mito de Teseo y el Minotauro, en el cual está basado el cuento', where:['asterion']},
+  {ind:1, col:'Indicador (las cuatro fases)', items:[
+    {tag:'fases', txt:'Las cuatro fases: natural, de ubicación, analítica y explicativa e interpretativa', where:['fases']}
+  ]},
+  {ind:1, col:'Contenido · Cuento «La casa de Asterión»', items:[
+    {tag:'ast-lectura', txt:'Lectura sobre el texto', where:['asterion']},
+    {tag:'ast-tema', txt:'Temática central implícita', where:['asterion']},
+    {tag:'ast-temas2', txt:'Temas secundarios', where:['asterion']},
+    {tag:'ast-pers', txt:'Personajes', where:['asterion']},
+    {tag:'ast-esp', txt:'Espacios (físico, psicológico, económico, moral, religioso)', where:['asterion','fases']},
+    {tag:'ast-ens', txt:'Enseñanzas', where:['asterion']},
+    {tag:'ast-ctx', txt:'Relación del texto con el contexto', where:['asterion']},
+    {tag:'mito', txt:'Mito de Teseo y el minotauro en el cual está basado el cuento', where:['asterion']},
     {tag:'cuento', txt:'Características del género literario cuento presentes en el texto', where:['fases','asterion']},
-    {tag:'borges', txt:'Biografía de Jorge Luis Borges y su relación con el texto', where:['asterion']},
-    {tag:'met-lectura', txt:'La metamorfosis: lectura completa (argumento de las tres partes)', where:['metamorfosis']},
-    {tag:'met-pers', txt:'La metamorfosis: personajes', where:['metamorfosis']},
-    {tag:'met-tema', txt:'La metamorfosis: tema principal', where:['metamorfosis']},
-    {tag:'met-temas2', txt:'La metamorfosis: temas secundarios', where:['metamorfosis']},
-    {tag:'met-ctx', txt:'La metamorfosis: relación del texto con el contexto social', where:['metamorfosis']},
-    {tag:'met-esp', txt:'La metamorfosis: espacios físico, psicológico, económico, religioso y moral', where:['metamorfosis','fases']},
-    {tag:'met-ens', txt:'La metamorfosis: enseñanza', where:['metamorfosis']},
+    {tag:'borges', txt:'Biografía del autor Jorge Luis Borges y su relación con el texto', where:['asterion']}
+  ]},
+  {ind:1, col:'Contenido · Novela «La metamorfosis»', items:[
+    {tag:'met-lectura', txt:'Lectura completa', where:['metamorfosis']},
+    {tag:'met-pers', txt:'Personajes', where:['metamorfosis']},
+    {tag:'met-tema', txt:'Tema principal', where:['metamorfosis']},
+    {tag:'met-temas2', txt:'Temas secundarios', where:['metamorfosis']},
+    {tag:'met-ctx', txt:'Relación del texto con el contexto social', where:['metamorfosis']},
+    {tag:'met-esp', txt:'Espacios literarios (físico, psicológico, económico, religioso y moral)', where:['metamorfosis','fases']},
+    {tag:'met-ens', txt:'Enseñanza', where:['metamorfosis']},
     {tag:'novela', txt:'Características del género literario novela presentes en el texto', where:['fases','metamorfosis']},
-    {tag:'kafka', txt:'Biografía de Franz Kafka y su relación con el texto', where:['metamorfosis']}
+    {tag:'kafka', txt:'Biografía del autor Franz Kafka (en el documento aparece «Frank») y su relación con el texto', where:['metamorfosis']}
   ]},
   {ind:1, col:'Aprendizaje por evaluar', items:[
     {tag:'elementos', txt:'Explica e identifica los elementos de análisis literarios estudiados en el cuento y la novela', where:['fases','asterion','metamorfosis']},
     {tag:'realismo', txt:'Describe y relaciona características del Realismo social y cómo se presenta en los textos estudiados', where:['fases']},
-    {tags:['borges','kafka'], txt:'Explica aspectos fundamentales de la vida del autor y la relevancia con el texto (Borges y Kafka)', where:['asterion','metamorfosis']}
+    {tags:['borges','kafka'], txt:'Explica aspectos fundamentales de la vida del autor y la relevancia con el texto que ha escrito', where:['asterion','metamorfosis']}
   ]},
   {ind:2, col:'Contenido', items:[
     {tag:'v-def', txt:'Definición de verbo', where:['verbo']},
     {tag:'v-estr', txt:'Estructura del verbo: raíz, desinencias (persona, número y tiempo)', where:['verbo']},
-    {tag:'v-modos', txt:'Modos y sus respectivos tiempos: indicativo, subjuntivo e imperativo (tabla de tiempos)', where:['verbo','tabla']},
-    {tag:'v-frag', txt:'Identifica en fragmentos textuales tiempos simples y compuestos y el modo empleado', where:['verbo']}
+    {tag:'v-modos', txt:'Modos y sus respectivos tiempos: indicativo, subjuntivo e imperativo. Ver tabla de tiempos adjunta en guía de trabajo', where:['verbo','tabla']}
   ]},
-  {ind:3, col:'Contenido y aprendizajes', items:[
+  {ind:2, col:'Aprendizaje por evaluar', items:[
+    {tag:'v-frag', txt:'Identifica en fragmentos textuales tiempos tanto simples como compuestos y los tipos de modo empleado (indicativo, subjuntivo e imperativo)', where:['verbo']}
+  ]},
+  {ind:3, col:'Contenido', items:[
     {tag:'satisfacer', txt:'Conjugación del verbo satisfacer', where:['conjug','tabla','oraciones']},
     {tag:'cocer', txt:'Conjugación del verbo cocer', where:['conjug','tabla','oraciones']},
     {tag:'erguir', txt:'Conjugación del verbo erguir', where:['conjug','tabla','oraciones']},
     {tag:'asir', txt:'Conjugación del verbo asir', where:['conjug','tabla','oraciones']},
-    {tag:'v-reg', txt:'Reconocer por su raíz cuando un verbo es irregular (cambia su raíz) y cuando es regular (no cambia)', where:['conjug','tabla']},
-    {tag:'v-orto', txt:'Emplear bien la ortografía de las marcas de tiempo', where:['conjug']},
-    {tag:'v-prod', txt:'Construye, a partir de una estructura dada, oraciones donde emplee verbos según se le indica', where:['oraciones']}
+    {tag:'v-reg', txt:'Reconocer por su raíz cuando un verbo es irregular (cambios en la estructura de su raíz principal) y cuando un verbo es regular (no sufre cambios en la estructura de su raíz)', where:['conjug','tabla']},
+    {tag:'v-orto', txt:'Indicador: emplear bien la ortografía de sus marcas de tiempo', where:['conjug']}
   ]},
-  {ind:4, col:'Contenido y aprendizaje', items:[
+  {ind:3, col:'Aprendizaje por evaluar', items:[
+    {tag:'v-prod', txt:'Construye a partir de la guía de una estructura dada oraciones donde emplee verbos según se le indica', where:['oraciones']},
+    {tags:['satisfacer','cocer','erguir','asir','v-reg'], txt:'Reconoce y aplica de forma adecuada la conjugación de verbos (satisfacer, cocer, erguir, asir) así como las raíces de verbos regulares e irregulares', where:['conjug','tabla','oraciones']}
+  ]},
+  {ind:4, col:'Contenido', items:[
     {tag:'tc-tema', txt:'Escogencia del tema', where:['taller']},
-    {tag:'tc-estr', txt:'Escritura respetando introducción, desarrollo y conclusión', where:['taller']},
+    {tag:'tc-estr', txt:'Escritura del texto respetando: introducción, desarrollo y conclusión', where:['taller']},
     {tag:'tc-rel', txt:'Relación de la temática central de La casa de Asterión o La metamorfosis con el texto', where:['taller']},
-    {tag:'tc-orto', txt:'Normas ortográficas: mayúscula, sangría, ortografía y léxico', where:['taller']},
-    {tag:'tc-verb', txt:'Empleo adecuado de los tiempos verbales en el texto', where:['taller']},
-    {tag:'tc-200', txt:'Texto de 200 palabras con estructura coherente y adecuado al tema', where:['taller']}
+    {tag:'tc-orto', txt:'Aplicación adecuada de las normas ortográficas (mayúscula, sangría, ortografía, léxico) en el texto', where:['taller']},
+    {tag:'tc-verb', txt:'Empleo adecuado de los tiempos verbales', where:['taller']}
+  ]},
+  {ind:4, col:'Aprendizaje por evaluar', items:[
+    {tags:['tc-200','tc-estr'], txt:'Produce un texto de 200 palabras en el cual emplea una estructura coherente, adecuado al tema escogido y en donde aplica adecuadamente la normativa gramatical y ortográfica', where:['taller']}
   ]}
 ];
 
@@ -477,7 +488,6 @@ LESSONS.fases = `
 <tr><td>Crítica a instituciones</td><td>La empresa (el apoderado) y la familia interesada.</td><td>El poder (tributo de Atenas a Creta; sacrificio de víctimas).</td></tr>
 <tr><td>Deshumanización</td><td>Gregor pasa a ser «eso», un bicho estorboso.</td><td>El «monstruo» tiene sentimientos, pero nadie lo ve como humano.</td></tr>
 </table></div>
-<div class="callout warn"><b>Ojo:</b> Kafka suele asociarse también al expresionismo y a la literatura del absurdo, y Borges a la literatura fantástica. Pero en el examen se te pide leerlos desde el <b>Realismo social</b>: busca la <b>crítica a la sociedad</b> que hay detrás de lo fantástico.</div>
 `;
 
 LESSONS.asterion = `
@@ -575,14 +585,13 @@ LESSONS.metamorfosis = `
 <li><b>1906</b> — Se doctora en Derecho. Trabaja en el <b>Instituto de Seguros de Accidentes de Trabajo</b>: un empleo burocrático que detestaba; escribía de noche.</li>
 <li><b>1915</b> — Publica <i>La metamorfosis</i>.</li>
 <li><b>1919</b> — Escribe <i>Carta al padre</i>, donde expresa el miedo y la culpa que su padre le provocaba.</li>
-<li><b>1924</b> — Muere de <b>tuberculosis</b> el 3 de junio cerca de Viena. Pidió a su amigo <b>Max Brod</b> que quemara sus escritos; Brod no lo hizo y publicó <i>El proceso</i> y <i>El castillo</i>.</li>
+<li><b>1924</b> — Muere de <b>tuberculosis</b> el 3 de junio cerca de Viena.</li>
 </ol>
 <div class="callout"><b>Relación autor ↔ texto</b><ul>
 <li><b>Padre autoritario</b> ↔ el señor Samsa, que agrede a Gregor.</li>
 <li><b>Trabajo burocrático y agobiante</b> ↔ la vida de viajante que Gregor odia.</li>
 <li>Sentimientos de <b>culpa, inutilidad y aislamiento</b> ↔ Gregor se siente una carga.</li>
 <li>La <b>enfermedad</b>: Kafka también se sintió una carga (tuberculosis).</li>
-<li>De su obra surge el adjetivo <b>«kafkiano»</b>: situación absurda, angustiosa y sin salida.</li>
 </ul></div>
 
 <h3>3 · Fase analítica</h3>
@@ -677,16 +686,16 @@ LESSONS.conjug = `
 <h2>Verbos regulares, irregulares y conjugaciones especiales</h2>
 <div class="grid g2">
 <div class="callout ok"><b>Verbo regular:</b> su <b>raíz no cambia</b> en ninguna forma y sigue las desinencias del modelo (amar, temer, partir).<br><i>com-o, com-í, com-eré, com-a</i></div>
-<div class="callout warn"><b>Verbo irregular:</b> sufre <b>cambios en la raíz</b> (o en las desinencias) respecto al modelo.<br><i>ten-er → teng-o, tuv-e</i></div>
+<div class="callout warn"><b>Verbo irregular:</b> sufre <b>cambios en la raíz</b> (o en las desinencias) respecto al modelo.<br><i>cocer → cuezo</i>, <i>asir → asgo</i></div>
 </div>
 <p><b>Truco:</b> conjuga el verbo en <b>presente</b>, <b>pretérito perfecto simple</b> y <b>futuro</b> (y en presente de subjuntivo). Si la raíz cambia en alguno, es irregular.</p>
 <ul>
-<li>Diptongación: <i>o → ue</i> (cocer → <b>cue</b>zo), <i>e → ie</i> (querer → qu<b>ie</b>ro).</li>
-<li>Cierre vocálico: <i>e → i</i> (erguir → <b>ir</b>guió, pedir → pido).</li>
-<li>Consonante añadida: <i>-g-</i> (asir → as<b>g</b>o, hacer → ha<b>g</b>o).</li>
-<li>Cambio total de raíz: <i>hacer → hic-e, hiz-o</i>; <i>ir → fu-i</i>.</li>
+<li>Diptongación: <i>o → ue</i> (cocer → <b>cue</b>zo).</li>
+<li>Cierre vocálico: <i>e → i</i> (erguir → <b>ir</b>guió).</li>
+<li>Consonante añadida: <i>-g-</i> (asir → as<b>g</b>o).</li>
+<li>Cambio de raíz: <i>satisfacer → satisf<b>ic</b>e, satisf<b>iz</b>o</i> (se conjuga como <i>hacer</i>).</li>
 </ul>
-<div class="callout"><b>Ajuste ortográfico ≠ irregularidad:</b> <i>vencer → venzo</i> cambia c por z solo para conservar el sonido; eso no lo vuelve irregular. En <i>cocer</i>, en cambio, la irregularidad es el diptongo <b>o → ue</b> (<i>cuezo</i>).</div>
+<div class="callout"><b>Ojo con cocer:</b> la irregularidad es el diptongo <b>o → ue</b> (<i>cuezo</i>); el cambio c → z (<i>cueza</i>) solo conserva el sonido.</div>
 
 <h3>⭐ Los cuatro verbos del examen</h3>
 <details class="acc" open><summary>Satisfacer — se conjuga como <i>hacer</i></summary><div>
@@ -756,7 +765,6 @@ LESSONS.conjug = `
 <tr><td>1.ª plural del copretérito <i>-ar</i> y del pret. imperfecto de subjuntivo: esdrújulas con tilde.</td><td>cantábamos, cociéramos, asiéramos, irguiéramos</td></tr>
 <tr><td>2.ª plural (vosotros): tilde en <i>-áis, -éis, -ís</i>.</td><td>cocéis, asís, satisfagáis</td></tr>
 <tr><td><b>Haber</b> siempre con <b>h</b>; <i>ha</i> (verbo) ≠ <i>a</i> (preposición).</td><td>había, hubiera, haya · «ha cocido» / «va a cocer»</td></tr>
-<tr><td><b>Hecho</b> (de hacer) ≠ <b>echo</b> (de echar).</td><td>«ha hecho la tarea» · «echó a los huéspedes»</td></tr>
 <tr><td>Imperativo de vosotros termina en <b>-d</b>, no en <i>-r</i>.</td><td>coced, asid, erguid, satisfaced</td></tr>
 <tr><td><i>-zo</i>/<i>-za</i> en cocer y <i>-izo</i> en satisfizo: con <b>z</b>.</td><td>cuezo, cueza, satisfizo</td></tr>
 </table></div>
@@ -776,7 +784,7 @@ LESSONS.taller = `
 <ul>
 <li><b>Mayúscula</b> al inicio del texto, después de punto y en nombres propios (Gregor, Kafka, Borges, Asterión, Teseo).</li>
 <li><b>Sangría</b> al inicio de cada párrafo (en el examen a mano: ≈ 1 cm).</li>
-<li><b>Ortografía</b>: tildes, b/v, c/s/z, g/j, h. Títulos: cuento entre comillas («La casa de Asterión»), novela en cursiva o subrayada a mano (<i>La metamorfosis</i>).</li>
+<li><b>Ortografía</b>: tildes, b/v, c/s/z, g/j, h.</li>
 <li><b>Léxico</b> formal y variado: sin muletillas («o sea», «tipo»), sin coloquialismos («mae», «tuanis»), sin repetir palabras.</li>
 <li><b>Tiempos verbales</b>: comenta la obra en <b>presente</b> («Kafka muestra», «Gregor se aísla») y mantén la coherencia; usa pasado para hechos biográficos («Kafka nació en 1883»).</li>
 <li><b>Conectores</b>: <i>en primer lugar, además, por otra parte, sin embargo, por ejemplo, por lo tanto, en conclusión</i>.</li>
@@ -966,9 +974,6 @@ const Q = [
 {m:'metamorfosis',l:1,t:['kafka'],q:'¿Qué relación tenía Kafka con su padre?',
  o:['Muy cercana y cariñosa','Conflictiva: su padre era autoritario y le generaba miedo y culpa (Carta al padre)','Nunca lo conoció','Su padre era escritor y lo impulsó'],a:1,
  e:'En Carta al padre (1919) expresa el temor que le causaba; se refleja en el señor Samsa.'},
-{m:'metamorfosis',l:1,t:['kafka'],q:'¿Qué hizo Max Brod con los escritos de Kafka?',
- o:['Los quemó como Kafka pidió','No los quemó y los publicó después de su muerte','Los vendió en secreto','Los tradujo al español en vida de Kafka'],a:1,
- e:'Gracias a Brod conocemos El proceso y El castillo.'},
 {m:'metamorfosis',l:1,t:['met-lectura','met-pers'],q:'¿Quiénes se alojan en la casa en la tercera parte?',
  o:['Tres huéspedes','Los abuelos','El apoderado y su esposa','Unos médicos'],a:0,
  e:'La familia alquila una habitación a tres huéspedes para obtener dinero.'},
@@ -1018,8 +1023,6 @@ const Q = [
 {m:'metamorfosis',l:3,t:['met-lectura','elementos'],q:'Tras la muerte de Gregor, el narrador continúa con la familia. ¿Qué efecto produce?',
  o:['Muestra que la vida sigue sin él y resalta la indiferencia familiar','Indica que Gregor revivirá','Es un error del autor','Presenta a un nuevo protagonista heroico'],a:0,
  e:'El foco pasa a la familia, que «renace»: Gregor era una carga para ellos.'},
-{m:'metamorfosis',l:3,t:['kafka'],q:'¿Qué significa el adjetivo «kafkiano»?',
- o:['Alegre y optimista','Una situación absurda, angustiosa y sin salida, a menudo burocrática','Relativo a los insectos','Muy breve'],a:1,e:'Se usa para describir situaciones absurdas y opresivas como las de la obra de Kafka.'},
 {m:'metamorfosis',l:3,t:['met-tema','ast-tema'],q:'¿Qué tienen en común Gregor y Asterión?',
  o:['Ambos son héroes que triunfan','Ambos son vistos como «monstruos», viven aislados y rechazados, y terminan muriendo','Ambos viven en Creta','Ambos narran en primera persona'],a:1,
  e:'Los dos textos exploran la soledad y el rechazo del diferente.',w:{3:'Solo Asterión narra en primera persona.'}},
@@ -1118,7 +1121,6 @@ const Q = [
 {m:'conjug',l:2,t:['v-orto'],q:'¿Cuál está bien escrita?',o:['cantavamos','cantabamos','cantábamos','cántabamos'],a:2,e:'Copretérito -ar con b, y la 1.ª plural es esdrújula: tilde.'},
 {m:'conjug',l:2,t:['v-orto'],q:'¿Por qué «cocía» lleva tilde?',o:['Porque es aguda','Porque la í tónica forma hiato con la a','Porque es esdrújula','No debe llevar tilde'],a:1,e:'co-cí-a: la tilde marca el hiato.'},
 {m:'conjug',l:2,t:['v-orto'],q:'Elige la opción correcta: «Asterión ___ esperado toda su vida ___ su redentor».',o:['a / ha','ha / a','ah / a','ha / ha'],a:1,e:'ha (verbo haber) + participio; a (preposición).'},
-{m:'conjug',l:2,t:['v-orto'],q:'Elige la opción correcta: «El padre ___ a los huéspedes y dijo: “Ya está ___”».',o:['hechó / echo','echó / hecho','echo / echo','hecho / echó'],a:1,e:'echó (de echar, sin h) · hecho (de hacer, con h).'},
 {m:'conjug',l:2,t:['v-orto','asir'],q:'Completa: «Si nosotros ______ (asir, pret. imperfecto de subjuntivo) la soga…».',o:['asieramos','asiéramos','asgiéramos','asíeramos'],a:1,e:'Esdrújula → tilde: a-sié-ra-mos.'},
 {m:'conjug',l:2,t:['v-orto','cocer'],q:'Imperativo de vosotros: «______ las papas antes de servirlas».',o:['Cocer','Coced','Cocé','Cuezed'],a:1,e:'El imperativo de vosotros termina en -d: coced.'},
 {m:'conjug',l:2,type:'tf',t:['v-orto'],q:'«Hubiera» se escribe con h porque es una forma del verbo haber.',a:true,e:'Verdadero. Todas las formas de haber llevan h.'},
@@ -1143,7 +1145,6 @@ const Q = [
 {m:'taller',l:2,t:['tc-verb'],q:'Al comentar lo que ocurre en la obra, ¿qué tiempo verbal es más recomendable mantener?',o:['Mezclar presente, pasado y futuro sin orden','El presente («Kafka muestra», «Gregor se aísla»), de forma coherente','El futuro («Gregor se aislará»)','El imperativo'],a:1,e:'El presente de comentario da claridad; el pasado se usa para datos biográficos.'},
 {m:'taller',l:2,t:['tc-orto'],q:'¿Qué expresión es adecuada para el léxico de un texto crítico?',o:['«Diay, mae, el libro está tuanis.»','«La obra evidencia la indiferencia de la familia.»','«O sea, tipo que Gregor se murió.»','«Demasiado bueno el cuento, jaja.»'],a:1,e:'Se usa léxico formal y preciso, sin coloquialismos ni muletillas.'},
 {m:'taller',l:2,t:['tc-estr'],q:'¿Cuál conector es propio de la conclusión?',o:['En primer lugar','Por ejemplo','En conclusión','Además'],a:2,e:'«En conclusión», «En síntesis», «Por lo tanto» introducen el cierre.'},
-{m:'taller',l:2,t:['tc-orto'],q:'¿Cómo se deben escribir los títulos de las obras?',o:['Todo en mayúscula sin comillas','El cuento entre comillas («La casa de Asterión») y la novela en cursiva o subrayada a mano (La metamorfosis)','Sin mayúscula inicial','Entre paréntesis'],a:1,e:'Los títulos de obras menores van entre comillas; los libros, en cursiva.'},
 {m:'taller',l:3,t:['tc-rel'],q:'¿Qué fragmento relaciona MEJOR el tema con el texto literario?',
  o:['La soledad es mala y nadie la quiere.','Asterión inventa a «otro Asterión» para jugar, lo que evidencia que la soledad impuesta por el rechazo social puede ser insoportable.','Borges nació en 1899.','Los laberintos son lugares donde uno se pierde.'],a:1,e:'Un buen argumento conecta la idea con una evidencia concreta del texto y la explica.'},
 {m:'taller',l:3,t:['tc-200','tc-estr'],q:'Tienes 200 palabras. ¿Cuál distribución es la más equilibrada?',o:['Introducción 150, desarrollo 30, conclusión 20','Introducción ≈45, desarrollo ≈110, conclusión ≈45','Solo desarrollo de 200','Introducción 20, desarrollo 20, conclusión 160'],a:1,e:'El desarrollo es la parte más extensa porque contiene los argumentos.'}
@@ -1530,7 +1531,7 @@ function viewTemario(){
   }).join('');
   view(`${crumbs('Temario y cobertura')}
     <div class="card"><h1>Temario y auditoría de cobertura</h1>
-    <p>Cada fila corresponde a un contenido o aprendizaje del documento <b>«Temas para 1er examen de Español 10° – II periodo 2026»</b>. Se indica cuántos ítems de práctica lo evalúan y en qué módulo se estudia, para que no quede ningún vacío.</p>
+    <p>Cada fila corresponde a un contenido o aprendizaje del documento <b>«Temas para 1er examen de Español 10° – II periodo 2026»</b>. Se indica cuántos ítems de práctica lo evalúan y en qué módulo se estudia. La app no evalúa nada que no esté en esta lista.</p>
     <p><span class="badge ava">✓ ${covered} de ${totalItems} temas cubiertos</span> <span class="badge int">${Q.length} preguntas · ${TASKS.length} oraciones · taller de escritura</span></p></div>
     ${blocks}`);
 }

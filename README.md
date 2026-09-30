@@ -12,7 +12,7 @@ Práctica interactiva "de 0 a 100" para el **I examen de Español 10° (II perio
 La pantalla **Temario y cobertura** relaciona cada línea del documento oficial con los ítems que la evalúan.
 
 ## Características
-- 165 preguntas en tres niveles (conocimiento → aplicación → análisis), con retroalimentación para respuestas correctas e incorrectas.
+- 161 preguntas en tres niveles (conocimiento → aplicación → análisis), con retroalimentación para respuestas correctas e incorrectas.
 - Tipos de ítem: selección única, verdadero/falso, respuesta escrita (con control de tildes) y selección de palabras en fragmentos.
 - Tabla de conjugación interactiva que resalta las formas irregulares y tiene un modo de autoevaluación.
 - Constructor de 14 oraciones con revisión automática.
